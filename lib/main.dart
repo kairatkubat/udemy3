@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:udemy3/screens/product_overview.dart';
+import './screens/product_detail_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,6 +19,9 @@ class MyApp extends StatelessWidget {
         secondaryHeaderColor: Colors.deepOrange 
       ),
       home: ProductOverVirew(),
+      routes: {
+         ProductDetailScreen.routeName:(context) => ProductDetailScreen() 
+      },
     );
   }
 }
