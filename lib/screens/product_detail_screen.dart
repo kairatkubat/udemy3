@@ -1,6 +1,6 @@
   import 'package:flutter/material.dart';
   import 'package:provider/provider.dart';
-import 'package:udemy3/model/products.dart';
+import 'package:udemy3/provider/product.dart';
 import 'package:udemy3/provider/product_provider.dart';
 
 class ProductDetailScreen extends StatelessWidget {
