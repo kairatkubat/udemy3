@@ -15,8 +15,9 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    //provider listener
     return ChangeNotifierProvider(
-       
+       //version 4+ create instead of build
       create: (context) => Products(),
       child: MaterialApp(
         title: 'Flutter Demo',

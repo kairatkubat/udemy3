@@ -3,9 +3,9 @@ import 'package:udemy3/provider/product_provider.dart';
 import 'package:udemy3/widgets/product_item.dart';
 import 'package:provider/provider.dart';
 
-import '../model/products.dart';
-
 class ProductGrid extends StatelessWidget {
+  const ProductGrid({super.key});
+
    
   @override
   Widget build(BuildContext context) {
