@@ -10,8 +10,8 @@ class ProductOverVirew extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      appBar: AppBar(actions: [], title: const Text("My shop"),),
-      body: ProductGrid(),
+      appBar: AppBar( title: const Text("String"),),
+      body: const ProductGrid(),
     );
   }
 }

@@ -18,11 +18,11 @@ class  ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product =  Provider.of<Product >(context);
+    final product =  Provider.of<Product >(context, listen: false);
     return ClipRRect (
       borderRadius: BorderRadius.circular(10),
       child: Container(
-
+    
         decoration: const BoxDecoration(
           color: Colors.grey,
           boxShadow: [
@@ -38,17 +38,22 @@ class  ProductItem extends StatelessWidget {
         child: GridTile(
           footer:  GridTileBar(
           backgroundColor: Colors.black87,
-          leading: IconButton(
-            color: Theme.of(context).secondaryHeaderColor,
-            icon:  Icon(product.isFavorite ? Icons.favorite: Icons.favorite_border),onPressed: (){
-               product.toggleFavoriteStatus(); 
-            },) ,
+          leading: Consumer<Product>( 
+            builder: (ctx, product, _) =>  IconButton(
+              color: Theme.of(context).secondaryHeaderColor,
+              icon:  Icon(product.isFavorite ? Icons.favorite: Icons.favorite_border),
+              onPressed: (){
+                 product.toggleFavoriteStatus(); 
+              },
+              ),
+          ),
           title: Text(product. title, textAlign: TextAlign.center,),
           trailing: IconButton(
             color: Theme.of(context).secondaryHeaderColor,
             icon: const Icon(Icons.shopping_cart,size: 20,), onPressed: (){},
             ),
-          ),child:  GestureDetector(
+          )
+          ,child:  GestureDetector(
             onTap: (){Navigator.of(context).pushNamed(
               ProductDetailScreen.routeName, arguments: product.id);},
             child: Image.network(product.imageUrl, fit: BoxFit.cover,

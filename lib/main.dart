@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         ),
         home: const  ProductOverVirew(),
         routes: {
-           ProductDetailScreen.routeName:(context) => ProductDetailScreen() 
+           ProductDetailScreen.routeName: (context) => ProductDetailScreen() 
         },
       ),
     );
