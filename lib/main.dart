@@ -18,7 +18,10 @@ class MyApp extends StatelessWidget {
     //provider listener
     return ChangeNotifierProvider(
        //version 4+ create instead of build
+
       create: (context) => Products(),
+      //alternative way ChangeNotifierProvider.value 
+      // value: Products(),
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData( 
