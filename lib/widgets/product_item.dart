@@ -18,7 +18,7 @@ class  ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product =  Provider.of<Product >(context, listen: false);
+    final product =  Provider.of<Product>(context, listen: false);
     return ClipRRect (
       borderRadius: BorderRadius.circular(10),
       child: Container(
@@ -29,10 +29,10 @@ class  ProductItem extends StatelessWidget {
       BoxShadow(
         color: Colors.grey,
         blurRadius: 15.0, // soften the shadow
-        spreadRadius: 5.0, //extend the shadow
+        spreadRadius: 20.0, //extend the shadow
         offset: Offset(
-          5.0, // Move to right 5  horizontally
-          5.0, // Move to bottom 5 Vertically
+          20.0, // Move to right 5  horizontally
+          20.0, // Move to bottom 5 Vertically
         ),
       ),]),
         child: GridTile(
