@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:udemy3/widgets/badge.dart';
+import '../provider/cart.dart';
 import '../widgets/product_gridwidget.dart';
+import 'package:provider/provider.dart';
 
 enum FilteredOptions{
   favorites,
@@ -14,6 +17,7 @@ class ProductOverVirew extends StatefulWidget {
 }
 
 class _ProductOverVirewState extends State<ProductOverVirew> {
+  //
    var _showOnlyFavorites = false;
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,18 @@ class _ProductOverVirewState extends State<ProductOverVirew> {
           const PopupMenuItem( value: FilteredOptions.favorites,child:  Text("Favorie"),),
            const PopupMenuItem(value: FilteredOptions.all,child:  Text("Show all"),)
         ]
-      )],
+      ),
+      Consumer<Cart>( builder: (context, cart, ch) => Krug
+      (
+         color: Colors.orange,
+
+        value: cart.itemCount.toString(),
+        child: ch as Widget ,
+      ),
+       child:   IconButton(icon: Icon(Icons.shopping_cart), 
+        onPressed: (){},)
+      ,)
+      ],
       ),
       body: ProductGrid(_showOnlyFavorites),
     );
