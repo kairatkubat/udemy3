@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:udemy3/provider/cart.dart';
+import 'package:udemy3/screens/cart_screen.dart';
 import 'package:udemy3/screens/product_overview.dart';
 import './screens/product_detail_screen.dart';
 import 'package:provider/provider.dart';
@@ -30,11 +31,17 @@ ChangeNotifierProvider(
         title: 'Flutter Demo',
         theme: ThemeData( 
           primarySwatch: Colors.purple,
-          secondaryHeaderColor: Colors.deepOrange 
+          secondaryHeaderColor: Colors.deepOrange ,
+          textTheme: TextTheme(titleMedium: TextStyle(color: Colors.white),
+          titleLarge: TextStyle(color: Colors.black54 , fontSize: 24, fontWeight: FontWeight.bold)
+          
+          )
         ),
         home: const  ProductOverVirew(),
         routes: {
-           ProductDetailScreen.routeName: (context) => ProductDetailScreen() 
+           ProductDetailScreen.routeName: (context) => ProductDetailScreen() ,
+           CartScreen.routeName:(context) => CartScreen() ,
+
         },
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:udemy3/screens/cart_screen.dart';
 import 'package:udemy3/widgets/badge.dart';
 import '../provider/cart.dart';
 import '../widgets/product_gridwidget.dart';
@@ -24,7 +25,7 @@ class _ProductOverVirewState extends State<ProductOverVirew> {
     return  Scaffold(
       appBar: AppBar( title: const Text("String"),
       actions: [
-        IconButton(onPressed: (){}, icon: Icon(Icons.shop)),
+        
         PopupMenuButton(
           onSelected: (FilteredOptions selectedValue) {
            setState(() {
@@ -49,8 +50,9 @@ class _ProductOverVirewState extends State<ProductOverVirew> {
         value: cart.itemCount.toString(),
         child: ch as Widget ,
       ),
-       child:   IconButton(icon: Icon(Icons.shopping_cart), 
-        onPressed: (){},)
+       child:   IconButton(onPressed: (){
+          Navigator.of(context).pushNamed(CartScreen.routeName);
+        }, icon: const Icon(Icons.shopping_bag))
       ,)
       ],
       ),
