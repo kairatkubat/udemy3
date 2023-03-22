@@ -50,12 +50,14 @@ class  ProductItem extends StatelessWidget {
               ),
           ),
           title: Text(product. title, textAlign: TextAlign.center,),
-          trailing: IconButton(
+          trailing: Consumer<Product>(builder: (ctx, value, _) =>  IconButton(
             color: Theme.of(context).secondaryHeaderColor,
-            icon: const Icon(Icons.shopping_cart,size: 20,), onPressed: (){
+            icon:  Icon(product.isPressed ? Icons.shopping_cart: Icons.shopping_bag,size: 20,), onPressed: (){
+              product.toggleIsPressed();
               cart.addItem(product.id, product.price, product.title); 
             },
-            ),
+            ),)
+         
           )
           ,child:  GestureDetector(
             onTap: (){Navigator.of(context).pushNamed(

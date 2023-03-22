@@ -50,7 +50,9 @@ class _ProductOverVirewState extends State<ProductOverVirew> {
         value: cart.itemCount.toString(),
         child: ch as Widget ,
       ),
-       child:   IconButton(onPressed: (){
+       child:   IconButton(
+        onPressed: (){
+        
           Navigator.of(context).pushNamed(CartScreen.routeName);
         }, icon: const Icon(Icons.shopping_bag))
       ,)
