@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:udemy3/provider/cart.dart'; 
 import '../widgets/cart_item.dart' as ci;
+import '../provider/orders.dart'; 
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
@@ -9,7 +10,7 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<Cart>(context);
+    final cart = Provider.of<Cart>(context );
     return Scaffold(
       appBar: AppBar(actions: const [], title: const Text( 'Your cart'),),
       body: Column(
@@ -22,11 +23,14 @@ class CartScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                    Text("Total", style: Theme.of(context).textTheme.titleLarge,),
-                  Spacer(),
+                 const  Spacer(),
                   Chip(label: Text('\$${cart.totalAmount}', style: Theme.of(context).textTheme.titleMedium,),
                   backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  TextButton(onPressed: (){}, child: const Text("Oreder now"))
+                  TextButton(onPressed: (){
+                    Provider.of<Orders>(context, listen: false).addOrders(cart.items.values.toList(),  cart.totalAmount);
+                    cart.clear();
+                  }, child: const Text("Oreder now"))
                 ],
               ),
             ),
