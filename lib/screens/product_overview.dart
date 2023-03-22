@@ -39,8 +39,8 @@ class _ProductOverVirewState extends State<ProductOverVirew> {
           },
           icon: const Icon(Icons.more_vert),  
           itemBuilder:  (value) =>[
-          const PopupMenuItem( value: FilteredOptions.favorites,child:  Text("Favorie"),),
-           const PopupMenuItem(value: FilteredOptions.all,child:  Text("Show all"),)
+          const PopupMenuItem( value: FilteredOptions.favorites,child:  Text("Favorie", style: TextStyle(color: Colors.purple),),),
+           const PopupMenuItem(value: FilteredOptions.all,child:  Text("Show all",  style: TextStyle(color: Colors.purple),),)
         ]
       ),
       Consumer<Cart>( builder: (context, cart, ch) => Krug
