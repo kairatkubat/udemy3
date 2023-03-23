@@ -50,13 +50,23 @@ class  ProductItem extends StatelessWidget {
               ),
           ),
           title: Text(product. title, textAlign: TextAlign.center,),
-          trailing: Consumer<Product>(builder: (ctx, value, _) =>  IconButton(
-            color: Theme.of(context).secondaryHeaderColor,
-            icon:  Icon(product.isPressed ? Icons.shopping_cart: Icons.shopping_bag,size: 20,), onPressed: (){
-              product.toggleIsPressed();
-              cart.addItem(product.id, product.price, product.title); 
-            },
-            ),)
+          trailing:
+           IconButton(
+           color: Theme.of(context).secondaryHeaderColor,
+           icon:  const Icon( Icons.shopping_cart,size: 20,), onPressed: (){
+             cart.addItem(product.id, product.price, product.title); 
+             ScaffoldMessenger.of(context).hideCurrentSnackBar();
+             ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content:  Text("Item added to cart",),
+              duration: Duration(seconds: 2),
+              action: SnackBarAction(label:  "Undo", onPressed: (){
+                cart.removeSingleItem(product.id); 
+              }
+              ,),
+              
+              ));
+           },
+           )
          
           )
           ,child:  GestureDetector(
