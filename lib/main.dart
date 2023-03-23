@@ -6,6 +6,7 @@ import 'package:udemy3/screens/product_overview.dart';
 import './screens/product_detail_screen.dart';
 import 'package:provider/provider.dart';
 import './provider/product_provider.dart';
+import './screens/orders_screen.dart';
 
 
 void main() {
@@ -43,7 +44,8 @@ ChangeNotifierProvider(
         home: const  ProductOverVirew(),
         routes: {
            ProductDetailScreen.routeName: (context) => ProductDetailScreen() ,
-           CartScreen.routeName:(context) => CartScreen() ,
+           CartScreen.routeName:(context) => const  CartScreen() ,
+           OrdersScreen.routeName: (context) => const OrdersScreen(), 
 
         },
       ),

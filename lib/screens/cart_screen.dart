@@ -24,7 +24,7 @@ class CartScreen extends StatelessWidget {
                 children: [
                    Text("Total", style: Theme.of(context).textTheme.titleLarge,),
                  const  Spacer(),
-                  Chip(label: Text('\$${cart.totalAmount}', style: Theme.of(context).textTheme.titleMedium,),
+                  Chip(label: Text('\$${cart.totalAmount.toStringAsFixed(2)}', style: Theme.of(context).textTheme.titleMedium,),
                   backgroundColor: Theme.of(context).primaryColor,
                   ),
                   TextButton(onPressed: (){
