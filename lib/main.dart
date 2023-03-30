@@ -3,6 +3,7 @@ import 'package:udemy3/provider/cart.dart';
 import 'package:udemy3/provider/orders.dart';
 import 'package:udemy3/screens/cart_screen.dart';
 import 'package:udemy3/screens/product_overview.dart';
+import 'package:udemy3/screens/user_products_screen.dart';
 import './screens/product_detail_screen.dart';
 import 'package:provider/provider.dart';
 import './provider/product_provider.dart';
@@ -46,6 +47,7 @@ ChangeNotifierProvider(
            ProductDetailScreen.routeName: (context) => ProductDetailScreen() ,
            CartScreen.routeName:(context) => const  CartScreen() ,
            OrdersScreen.routeName: (context) => const OrdersScreen(), 
+           UserProduct.routeName:(context) => UserProduct() 
 
         },
       ),

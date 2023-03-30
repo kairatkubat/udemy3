@@ -21,7 +21,7 @@ class _OrderItemState extends State<OrderItem> {
       child: Column(
           children: [
             ListTile(
-              title: Text( '\$${widget.orders.amount}', style: TextStyle(color: Colors.black),),
+              title: Text( '\$${widget.orders.amount.toStringAsFixed(2)}', style: TextStyle(color: Colors.black),),
               subtitle: Text(DateFormat('dd MM  yyyy hh:mm').format(widget.orders.dateTime )),
               trailing: IconButton(
                 icon: Icon(expanded? Icons.expand_less:  Icons.expand_more), 
