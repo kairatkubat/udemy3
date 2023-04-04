@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:udemy3/provider/cart.dart';
 import 'package:udemy3/provider/orders.dart';
 import 'package:udemy3/screens/cart_screen.dart';
+import 'package:udemy3/screens/edit_product_screen.dart';
 import 'package:udemy3/screens/product_overview.dart';
 import 'package:udemy3/screens/user_products_screen.dart';
 import './screens/product_detail_screen.dart';
@@ -37,7 +38,7 @@ ChangeNotifierProvider(
         theme: ThemeData( 
           primarySwatch: Colors.purple,
           secondaryHeaderColor: Colors.deepOrange ,
-          textTheme: TextTheme(titleMedium: TextStyle(color: Colors.white),
+          textTheme: TextTheme(titleMedium: TextStyle(color: Colors.black),
           titleLarge: TextStyle(color: Colors.black54 , fontSize: 24, fontWeight: FontWeight.bold)
           
           )
@@ -47,7 +48,8 @@ ChangeNotifierProvider(
            ProductDetailScreen.routeName: (context) => ProductDetailScreen() ,
            CartScreen.routeName:(context) => const  CartScreen() ,
            OrdersScreen.routeName: (context) => const OrdersScreen(), 
-           UserProduct.routeName:(context) => UserProduct() 
+           UserProduct.routeName:(context) => UserProduct(),
+           EditProduct.routeName:(context) => EditProduct()
 
         },
       ),

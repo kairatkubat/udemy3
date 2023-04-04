@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:udemy3/widgets/app_drawer.dart';
 import 'package:udemy3/widgets/user_product.dart';
 import '../provider/product_provider.dart';
+import '../screens/edit_product_screen.dart';
 
 class UserProduct  extends StatelessWidget {
   static const routeName = '/user-product'; 
@@ -13,7 +14,9 @@ class UserProduct  extends StatelessWidget {
     final productsData = Provider.of<Products>(context);
     return Scaffold(
       appBar: AppBar( title: const  Text("Your Product"), actions: [
-         IconButton(onPressed: (){}, icon: const  Icon(Icons.add))],),
+         IconButton(onPressed: (){
+          Navigator.of(context).pushNamed(EditProduct.routeName);
+         }, icon: const  Icon(Icons.add))],),
          drawer: const AppDrawer(),
       body:  Padding(padding: const  EdgeInsets.all(10),
       child: ListView.builder(
