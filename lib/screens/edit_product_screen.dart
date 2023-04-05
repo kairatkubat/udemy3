@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:udemy3/provider/product_provider.dart';
 import '../provider/product.dart';
 
 class  EditProduct extends StatefulWidget {
@@ -17,12 +19,40 @@ class _EditProductState extends State<EditProduct> {
   final _imageUrlFocus = FocusNode();
   final _form = GlobalKey<FormState>(); 
   var _editProduct = Product(id: null.toString() , title: '', description: '', price: 0, imageUrl: '');
-
+  var _initValues = {
+  'title': '',
+  'description': '',
+  'price': '',
+  'imageUrl': ' '
+  };
+  var isInit = true;
   @override
   void initState() {
    _imageUrlFocus.addListener(_updateImageUrl  );
     super.initState();
   }
+@override
+  void didChangeDependencies() {
+   if(isInit){
+    final productId = ModalRoute.of(context)!.settings.arguments as String; 
+      if(productId!=null){
+         _editProduct =   Provider.of<Products>(context, listen: false).findbyId(productId); 
+    _initValues = {
+       'title': _editProduct.title,
+       'description': _editProduct.description,
+       'price': _editProduct.price.toString(), 
+       //'imageUrl': _editProduct.imageUrl 
+       'imageUrl': ''
+    }; 
+    _imageController.text = _editProduct.imageUrl;
+      
+      }
+   
+   }
+   isInit = false;  
+    super.didChangeDependencies();
+  }
+
   @override
   void dispose() {
     _imageUrlFocus.removeListener(_updateImageUrl);
@@ -42,12 +72,22 @@ class _EditProductState extends State<EditProduct> {
   }
 
   void saveForm(){
-      _form.currentState?.save();
+     
       final isValid = _form.currentState?.validate();
-      print(_editProduct.price);
+ _form.currentState?.save();
+ if( _editProduct.id != null){
+   Provider.of<Products>(context, listen:  false).updateProduct( _editProduct.id, _editProduct );  
+ }
+ else{
+ Provider.of<Products>(context, listen:  false).addProduct( _editProduct);   
+ }
+      
+      Navigator.of(context).pop();
+      
       if(isValid!){
         return; 
       }
+     
   }
    
   @override
@@ -62,6 +102,7 @@ class _EditProductState extends State<EditProduct> {
           key: _form ,
           child: ListView(children: [
           TextFormField(
+            initialValue: _initValues['title'],
             decoration: const InputDecoration(labelText: 'Title'),
             textInputAction: TextInputAction.next,
             onFieldSubmitted:(value) {
@@ -69,7 +110,9 @@ class _EditProductState extends State<EditProduct> {
             } ,
             onSaved: (newValue) {
               _editProduct = 
-              Product(id: null.toString() , title: newValue.toString(), 
+              Product(id: _editProduct.id ,
+              isFavorite: _editProduct.isFavorite,
+               title: newValue.toString(), 
               description: _editProduct.description,
                price: _editProduct.price, 
                imageUrl: _editProduct.imageUrl);
@@ -82,6 +125,7 @@ class _EditProductState extends State<EditProduct> {
             },
           ),
             TextFormField(
+              initialValue: _initValues['price'],
             decoration: const InputDecoration(labelText: 'Price',  ),
             keyboardType: TextInputType.number,
             textInputAction: TextInputAction.next,
@@ -98,7 +142,8 @@ class _EditProductState extends State<EditProduct> {
             },
             onSaved: (value) {
               _editProduct = 
-              Product(id: null.toString() , title: _editProduct.title, 
+              Product(id: _editProduct.id ,
+              isFavorite: _editProduct.isFavorite , title: _editProduct.title, 
               description: _editProduct.description,
                price: double.parse(value!), 
                imageUrl: _editProduct.imageUrl);
@@ -107,6 +152,7 @@ class _EditProductState extends State<EditProduct> {
           ),
           const SizedBox(height: 15,),
           TextFormField(
+            initialValue: _initValues['description'],
             decoration:  const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Description'),
@@ -116,7 +162,9 @@ class _EditProductState extends State<EditProduct> {
             focusNode: _decsriptionNode,
              onSaved: (newValue) {
               _editProduct = 
-              Product(id: null.toString() , title: _editProduct.title, 
+              Product(id: _editProduct.id ,
+              isFavorite: _editProduct.isFavorite,
+               title: _editProduct.title, 
               description: newValue.toString(),
                price: _editProduct.price, 
                imageUrl: _editProduct.imageUrl);
@@ -154,9 +202,7 @@ class _EditProductState extends State<EditProduct> {
                     textInputAction: TextInputAction.done, 
                     controller: _imageController,
                     focusNode: _imageUrlFocus ,
-                    onFieldSubmitted  : (value){
-                      saveForm();
-                    },
+                    
                     onEditingComplete: (){
                       setState(() {
                         
@@ -164,7 +210,9 @@ class _EditProductState extends State<EditProduct> {
                     },
                      onSaved: (newValue) {
               _editProduct = 
-              Product(id: null.toString() , title: _editProduct.title, 
+              Product(id: _editProduct.id ,
+              isFavorite: _editProduct.isFavorite,
+                title: _editProduct.title, 
               description: _editProduct.description,
                price: _editProduct.price , 
                imageUrl: newValue.toString());
