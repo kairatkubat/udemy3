@@ -43,6 +43,11 @@ class _EditProductState extends State<EditProduct> {
 
   void saveForm(){
       _form.currentState?.save();
+      final isValid = _form.currentState?.validate();
+      print(_editProduct.price);
+      if(isValid!){
+        return; 
+      }
   }
    
   @override
@@ -69,6 +74,12 @@ class _EditProductState extends State<EditProduct> {
                price: _editProduct.price, 
                imageUrl: _editProduct.imageUrl);
             },
+            validator: (value) { 
+              if(value!.isEmpty){
+                 return 'Please Enter title';
+              }
+              return null;
+            },
           ),
             TextFormField(
             decoration: const InputDecoration(labelText: 'Price',  ),
@@ -78,13 +89,21 @@ class _EditProductState extends State<EditProduct> {
             onFieldSubmitted: (value) {
               FocusScope.of(context).requestFocus(_decsriptionNode);
             },
-            onSaved: (newValue) {
+             validator: (value) {
+              if(value!.isEmpty){
+                return 'Please enter price';
+              }
+             
+              return null;  
+            },
+            onSaved: (value) {
               _editProduct = 
               Product(id: null.toString() , title: _editProduct.title, 
               description: _editProduct.description,
-               price: double.parse(newValue.toString() ), 
+               price: double.parse(value!), 
                imageUrl: _editProduct.imageUrl);
             },
+           
           ),
           const SizedBox(height: 15,),
           TextFormField(
@@ -101,6 +120,15 @@ class _EditProductState extends State<EditProduct> {
               description: newValue.toString(),
                price: _editProduct.price, 
                imageUrl: _editProduct.imageUrl);
+            },
+            validator: (value) { 
+              if(value!.isEmpty){
+                 return 'Please Enter the Description';
+              }
+              if(value.length < 10){
+                return 'text longer';
+              }
+              return null;
             },
           ),
           Row(
@@ -141,6 +169,16 @@ class _EditProductState extends State<EditProduct> {
                price: _editProduct.price , 
                imageUrl: newValue.toString());
             }, 
+            validator: (value){
+              if(value!.isEmpty){
+                return 'Please enter image url';
+              }
+              if(!value.startsWith('http') && !value.startsWith('https')){
+                return 'invalid adress';
+              }
+              return null;
+            },
+            
                 
                   ),
                 )
