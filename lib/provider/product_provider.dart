@@ -64,7 +64,7 @@ return _items.firstWhere((element) => element.id == id);
   // }
 
    void addProduct(Product product){
-    final newProduct = Product(id: DateTime.now().toString() , 
+    final newProduct = Product(  id: DateTime.now().toString(), 
     title: product.title, 
     description: product.description, price: product.price, imageUrl: product.imageUrl); 
     _items.add(newProduct);
@@ -81,5 +81,10 @@ return _items.firstWhere((element) => element.id == id);
      else{
       print('Hello the king is back'); 
      }
+   }
+
+   void deleteProduct(String id){
+     _items.removeWhere((element) =>  element.id == id);
+     notifyListeners();
    }
 }

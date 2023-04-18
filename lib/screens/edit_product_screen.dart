@@ -7,6 +7,7 @@ class  EditProduct extends StatefulWidget {
 
   static const routeName = 'edit-product';
   const  EditProduct({super.key});
+  
 
   @override
   State<EditProduct> createState() => _EditProductState();
@@ -18,7 +19,7 @@ class _EditProductState extends State<EditProduct> {
   final _imageController = TextEditingController();
   final _imageUrlFocus = FocusNode();
   final _form = GlobalKey<FormState>(); 
-  var _editProduct = Product(id: null.toString() , title: '', description: '', price: 0, imageUrl: '');
+  var _editProduct = Product(id: null , title: '', description: '', price: 0, imageUrl: '');
   var _initValues = {
   'title': '',
   'description': '',
@@ -28,28 +29,28 @@ class _EditProductState extends State<EditProduct> {
   var isInit = true;
   @override
   void initState() {
-   _imageUrlFocus.addListener(_updateImageUrl  );
+   _imageUrlFocus.addListener(_updateImageUrl);
     super.initState();
   }
-@override
+
+  @override
   void didChangeDependencies() {
-   if(isInit){
-    final productId = ModalRoute.of(context)!.settings.arguments as String; 
-      if(productId!=null){
-         _editProduct =   Provider.of<Products>(context, listen: false).findbyId(productId); 
+    final productId = ModalRoute.of(context)?.settings.arguments; 
+
+   if(productId != null) {
+    
+    _editProduct = Provider.of<Products>(context, listen: false).findbyId(productId as String);
     _initValues = {
-       'title': _editProduct.title,
-       'description': _editProduct.description,
-       'price': _editProduct.price.toString(), 
-       //'imageUrl': _editProduct.imageUrl 
-       'imageUrl': ''
-    }; 
+      'title': _editProduct.title,
+      'description': _editProduct.description,
+      'price': _editProduct.price.toString(), 
+      //'imageUrl': _editProduct.imageUrl 
+      'imageUrl': ''
+      };   
     _imageController.text = _editProduct.imageUrl;
-      
-      }
-   
    }
-   isInit = false;  
+
+    isInit = false;  
     super.didChangeDependencies();
   }
 
@@ -72,21 +73,22 @@ class _EditProductState extends State<EditProduct> {
   }
 
   void saveForm(){
-     
-      final isValid = _form.currentState?.validate();
- _form.currentState?.save();
+    final isValid = _form.currentState!.validate();
+    if(!isValid){
+        return; 
+      } 
+ _form.currentState!.save();
+  
  if( _editProduct.id != null){
-   Provider.of<Products>(context, listen:  false).updateProduct( _editProduct.id, _editProduct );  
+   Provider.of<Products>(context, listen:  false).updateProduct( _editProduct.id ?? '', _editProduct );  
  }
  else{
  Provider.of<Products>(context, listen:  false).addProduct( _editProduct);   
  }
+       Navigator.of(context).pop();
       
-      Navigator.of(context).pop();
-      
-      if(isValid!){
-        return; 
-      }
+     
+
      
   }
    
@@ -212,7 +214,7 @@ class _EditProductState extends State<EditProduct> {
               _editProduct = 
               Product(id: _editProduct.id ,
               isFavorite: _editProduct.isFavorite,
-                title: _editProduct.title, 
+               title: _editProduct.title, 
               description: _editProduct.description,
                price: _editProduct.price , 
                imageUrl: newValue.toString());
