@@ -38,7 +38,7 @@ ChangeNotifierProvider(
         theme: ThemeData( 
           primarySwatch: Colors.purple,
           secondaryHeaderColor: Colors.deepOrange ,
-          textTheme: TextTheme(titleMedium: TextStyle(color: Colors.black),
+          textTheme: const TextTheme(titleMedium: TextStyle(color: Colors.black),
           titleLarge: TextStyle(color: Colors.black54 , fontSize: 24, fontWeight: FontWeight.bold)
           
           )
@@ -49,7 +49,7 @@ ChangeNotifierProvider(
            CartScreen.routeName:(context) => const  CartScreen() ,
            OrdersScreen.routeName: (context) => const OrdersScreen(), 
            UserProduct.routeName:(context) => UserProduct(),
-           EditProduct.routeName:(context) => EditProduct()
+           EditProduct.routeName:(context) => const EditProduct()
 
         },
       ),
