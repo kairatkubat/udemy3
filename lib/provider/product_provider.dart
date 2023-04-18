@@ -65,9 +65,9 @@ return _items.firstWhere((element) => element.id == id);
   //   _showFavoritesOnly = false; 
   // }
 
-   void addProduct(Product product){
+   Future<void> addProduct(Product product){
     final  url = Uri.parse('https://shopapp3-b5398-default-rtdb.firebaseio.com/products.json'); 
-    http.post(url, body: json.encode({
+    return http.post(url, body: json.encode({
       'title' : product.title,
       'description' : product.description,
       'imageUrl': product.imageUrl,

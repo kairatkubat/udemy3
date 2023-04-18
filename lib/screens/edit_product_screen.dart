@@ -27,6 +27,7 @@ class _EditProductState extends State<EditProduct> {
   'imageUrl': ' '
   };
   var isInit = true;
+  var _isLoading = false;
   @override
   void initState() {
    _imageUrlFocus.addListener(_updateImageUrl);
@@ -78,14 +79,27 @@ class _EditProductState extends State<EditProduct> {
         return; 
       } 
  _form.currentState!.save();
+
+ setState(() {
+   _isLoading =true;
+ });
   
  if( _editProduct.id != null){
    Provider.of<Products>(context, listen:  false).updateProduct( _editProduct.id ?? '', _editProduct );  
+   setState(() {
+     _isLoading =false;
+   });
+    Navigator.of(context).pop(); 
  }
  else{
- Provider.of<Products>(context, listen:  false).addProduct( _editProduct);   
+ Provider.of<Products>(context, listen:  false).addProduct( _editProduct).then((_) {
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.of(context).pop();
+ });   
  }
-       Navigator.of(context).pop();
+      
       
      
 
@@ -98,7 +112,8 @@ class _EditProductState extends State<EditProduct> {
       appBar: AppBar(title: const Text("Edit product"), actions: [
         IconButton(onPressed: saveForm, icon: const Icon(Icons.save))
       ],),
-      body: Padding(
+      body: _isLoading? const Center(child:  CircularProgressIndicator(),) :
+       Padding(
         padding: const EdgeInsets.all(17.0),
         child: Form(
           key: _form ,
@@ -191,7 +206,7 @@ class _EditProductState extends State<EditProduct> {
                   right: 10,
                 ),
                 decoration: BoxDecoration(border: Border.all(width: 1.0, color: Colors.grey)),
-                child: _imageController.text.isEmpty? Text(" Enter  a Url"):
+                child: _imageController.text.isEmpty? const Text(" Enter  a Url"):
                 FittedBox(
                   fit: BoxFit.contain,
                   child: Image.network(_imageController.text ),
