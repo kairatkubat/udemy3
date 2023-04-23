@@ -65,15 +65,17 @@ return _items.firstWhere((element) => element.id == id);
   //   _showFavoritesOnly = false; 
   // }
 
-   Future<void> addProduct(Product product){
-    final  url = Uri.parse('https://udemy3-62da2-default-rtdb.firebaseio.com/products.json'); 
-    return http.post(url, body: json.encode({
+   Future<void> addProduct(Product product) async {
+    final     url = Uri.parse('https://udemy3-62da2-default-rtdb.firebaseio.com/products.json'); 
+   try{
+     final resopnse = await   http.post(url, body: json.encode({
       'title' : product.title,
       'description' : product.description,
       'imageUrl': product.imageUrl,
       'isFavorite': product.isFavorite
-    })).then((resopnse) {
-       final newProduct = Product( 
+    }));
+
+    final newProduct = Product( 
          id: json.decode(resopnse.body)['name'], 
     title: product.title, 
     description: product.description,
@@ -82,10 +84,10 @@ return _items.firstWhere((element) => element.id == id);
     _items.add(newProduct);
     // _items.insert(0, newProduct) ; 
     notifyListeners();
-    }).catchError((error) {
-      // print(error);
-      throw error;
-    });
+    // }).catchError((error) {
+    //   // print(error);
+    //   throw error;
+    // });
     // final newProduct = Product(  id: DateTime.now().toString(), 
     // title: product.title, 
     // description: product.description, price: product.price, imageUrl: product.imageUrl); 
@@ -93,6 +95,15 @@ return _items.firstWhere((element) => element.id == id);
     // // _items.insert(0, newProduct) ; 
     // notifyListeners();
    }
+   catch (error){
+    print(error);
+    throw error; 
+   }
+      
+   }
+
+
+
 
    void updateProduct(String id, Product newProduct){
       final prodIndex = _items.indexWhere((prod) => prod.id ==  id);

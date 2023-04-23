@@ -6,7 +6,7 @@ import '../widgets/app_drawer.dart';
 import '../widgets/product_gridwidget.dart';
 import 'package:provider/provider.dart';
 
-enum FilteredOptions{
+enum FilteredOptions {
   favorites,
   all,
 }
@@ -20,46 +20,62 @@ class ProductOverVirew extends StatefulWidget {
 
 class _ProductOverVirewState extends State<ProductOverVirew> {
   //
-   var _showOnlyFavorites = false;
+  var _showOnlyFavorites = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+     
+  }
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar: AppBar( title: const Text("String"),
-      actions: [
-        
-        PopupMenuButton(
-          onSelected: (FilteredOptions selectedValue) {
-           setState(() {
-              if(selectedValue == FilteredOptions.favorites){
-             _showOnlyFavorites =true;
-            }
-            else{
-             _showOnlyFavorites = false; 
-            }
-           });
-          },
-          icon: const Icon(Icons.more_vert),  
-          itemBuilder:  (value) =>[
-          const PopupMenuItem( value: FilteredOptions.favorites,child:  Text("Favorie", style: TextStyle(color: Colors.purple),),),
-           const PopupMenuItem(value: FilteredOptions.all,child:  Text("Show all",  style: TextStyle(color: Colors.purple),),)
-        ]
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("String"),
+        actions: [
+          PopupMenuButton(
+              onSelected: (FilteredOptions selectedValue) {
+                setState(() {
+                  if (selectedValue == FilteredOptions.favorites) {
+                    _showOnlyFavorites = true;
+                  } else {
+                    _showOnlyFavorites = false;
+                  }
+                });
+              },
+              icon: const Icon(Icons.more_vert),
+              itemBuilder: (value) => [
+                    const PopupMenuItem(
+                      value: FilteredOptions.favorites,
+                      child: Text(
+                        "Favorie",
+                        style: TextStyle(color: Colors.purple),
+                      ),
+                    ),
+                    const PopupMenuItem(
+                      value: FilteredOptions.all,
+                      child: Text(
+                        "Show all",
+                        style: TextStyle(color: Colors.purple),
+                      ),
+                    )
+                  ]),
+          Consumer<Cart>(
+            builder: (context, cart, ch) => Krug(
+              color: Colors.orange,
+              value: cart.itemCount.toString(),
+              child: ch as Widget,
+            ),
+            child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed(CartScreen.routeName);
+                },
+                icon: const Icon(Icons.shopping_bag)),
+          )
+        ],
       ),
-      Consumer<Cart>( builder: (context, cart, ch) => Krug
-      (
-         color: Colors.orange,
-
-        value: cart.itemCount.toString(),
-        child: ch as Widget ,
-      ),
-       child:   IconButton(
-        onPressed: (){
-        
-          Navigator.of(context).pushNamed(CartScreen.routeName);
-        }, icon: const Icon(Icons.shopping_bag))
-      ,)
-      ],
-      ),
-      drawer: const AppDrawer() ,
+      drawer: const AppDrawer(),
       body: ProductGrid(_showOnlyFavorites),
     );
   }
