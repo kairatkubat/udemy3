@@ -39,6 +39,9 @@ dependencies:
   provider: ^6.0.5
   intl: ^0.18.0
   http: ^0.13.5
+  flutter_native_splash: ^2.2.19
+  
+
 
 dev_dependencies:
   flutter_test:
@@ -51,10 +54,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter packages.
+flutter_native_splash:
+  color: "#42a5f5"
 flutter:
 
   # The following line ensures that the Material Icons font is

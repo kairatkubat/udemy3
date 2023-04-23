@@ -66,7 +66,7 @@ return _items.firstWhere((element) => element.id == id);
   // }
 
    Future<void> addProduct(Product product){
-    final  url = Uri.parse('https://shopapp3-b5398-default-rtdb.firebaseio.com/products.json'); 
+    final  url = Uri.parse('https://udemy3-62da2-default-rtdb.firebaseio.com/products.json'); 
     return http.post(url, body: json.encode({
       'title' : product.title,
       'description' : product.description,
@@ -82,6 +82,9 @@ return _items.firstWhere((element) => element.id == id);
     _items.add(newProduct);
     // _items.insert(0, newProduct) ; 
     notifyListeners();
+    }).catchError((error) {
+      // print(error);
+      throw error;
     });
     // final newProduct = Product(  id: DateTime.now().toString(), 
     // title: product.title, 
