@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:udemy3/provider/product_provider.dart';
 import 'package:udemy3/screens/cart_screen.dart';
 import 'package:udemy3/widgets/badge.dart';
 import '../provider/cart.dart';
@@ -21,11 +22,31 @@ class ProductOverVirew extends StatefulWidget {
 class _ProductOverVirewState extends State<ProductOverVirew> {
   //
   var _showOnlyFavorites = false;
+  var _isInit = true;
+  var _isLoading = false;
 
   @override
   void initState() {
-    // TODO: implement initState
+    // Provider.of<Products>(context, listen: false).fetchAndSetProducts();
+  //  Future.delayed(Duration.zero).then((_) {
+  //    Provider.of<Products>(context).fetchAndSetProducts(); }); 
+    super.initState();
      
+  }
+  @override
+  void didChangeDependencies() {
+    
+    if(_isInit){
+      _isLoading = true; 
+      Provider.of<Products>(context).fetchAndSetProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+
+        });
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
   }
 
   @override
@@ -76,7 +97,7 @@ class _ProductOverVirewState extends State<ProductOverVirew> {
         ],
       ),
       drawer: const AppDrawer(),
-      body: ProductGrid(_showOnlyFavorites),
+      body: _isLoading?  Center(child: CircularProgressIndicator(),): ProductGrid(_showOnlyFavorites),
     );
   }
 }
