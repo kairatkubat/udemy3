@@ -37,7 +37,7 @@ class _ProductOverVirewState extends State<ProductOverVirew> {
   void didChangeDependencies() {
     
     if(_isInit){
-      _isLoading = true; 
+     _isLoading = true;
       Provider.of<Products>(context).fetchAndSetProducts().then((_) {
         setState(() {
           _isLoading = false;
