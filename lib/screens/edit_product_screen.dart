@@ -85,7 +85,7 @@ class _EditProductState extends State<EditProduct> {
       await Provider.of<Products>(context, listen: false)
           .updateProduct(_editProduct.id ?? '', _editProduct);
      
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
     } else {
       try {
         await Provider.of<Products>(context, listen: false)
@@ -117,7 +117,7 @@ class _EditProductState extends State<EditProduct> {
      setState(() {
         _isLoading = false;
       });
-      //  Navigator.of(context).pop();
+       Navigator.of(context).pop();
     
     
   }

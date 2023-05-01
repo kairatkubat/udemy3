@@ -9,6 +9,7 @@ import './screens/product_detail_screen.dart';
 import 'package:provider/provider.dart';
 import './provider/product_provider.dart';
 import './screens/orders_screen.dart';
+import './screens/auth_screen.dart';
 
 
 void main() {
@@ -43,7 +44,7 @@ ChangeNotifierProvider(
           
           )
         ),
-        home: const  ProductOverVirew(),
+        home:  AuthScreen(),
         routes: {
            ProductDetailScreen.routeName: (context) => ProductDetailScreen() ,
            CartScreen.routeName:(context) => const  CartScreen() ,

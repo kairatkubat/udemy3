@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'product.dart';
 import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
-   List<Product> _items = [
+  List<Product> _items = [
     // Product(
     //   id: 'p1',
     //   title: 'Red Shirt',
@@ -69,15 +70,20 @@ class Products with ChangeNotifier {
 
     try {
       final response = await http.get(url);
+      
       final extractData = jsonDecode(response.body) as Map<String, dynamic>;
+     
       final List<Product> loadedProducts = [];
+       if(extractData == null){
+        return;
+      }
       extractData.forEach((prodId, prodData) {
         loadedProducts.add(Product(
             id: prodId,
             title: prodData['title'],
             description: prodData['description'],
             price: prodData['price'],
-            imageUrl: prodData['imageUrl'])); 
+            imageUrl: prodData['imageUrl']));
       });
       _items = loadedProducts;
       notifyListeners();
@@ -124,11 +130,12 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future <void> updateProduct(String id, Product newProduct) async{
+  Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     final url = Uri.parse(
-        'https://udemy3-62da2-default-rtdb.firebaseio.com/products/$id.json');  
-        await  http.patch(url, body: json.encode( {
+        'https://udemy3-62da2-default-rtdb.firebaseio.com/products/$id.json');
+    await http.patch(url,
+        body: json.encode({
           'title': newProduct.title,
           'description': newProduct.description,
           'imageUrl': newProduct.imageUrl,
@@ -143,8 +150,29 @@ class Products with ChangeNotifier {
     }
   }
 
-  void deleteProduct(String id) {
-    _items.removeWhere((element) => element.id == id);
+  Future<void> deleteProduct(String id) async {
+    final url = Uri.parse(
+        'https://udemy3-62da2-default-rtdb.firebaseio.com/products/$id.json');
+
+    final existingProductIndex =
+        _items.indexWhere((element) => element.id == id);
+    Product? existingProduct = _items[existingProductIndex];
+    // _items.removeWhere((element) => element.id == id);
+
+    _items.removeAt(existingProductIndex);
     notifyListeners();
+     
+    final response = await http.delete(url);
+    
+    if (response.statusCode >= 400) {
+      _items.insert(existingProductIndex, existingProduct  );
+       notifyListeners(); 
+      throw HttpException("Could not delete messaage ");
+    }
+    existingProduct = null;
+    
+
+   
+    
   }
 }
