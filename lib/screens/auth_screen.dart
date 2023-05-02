@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'dart:math';
-
+import 'package:provider/provider.dart';
+import '../provider/auth.dart';
 import 'package:flutter/material.dart';
+import '../model/http_exception.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -40,8 +43,8 @@ class AuthScreen extends StatelessWidget {
                   Flexible(
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 20.0),
-                      padding:
-                         const  EdgeInsets.symmetric(vertical: 8.0, horizontal: 94.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 94.0),
                       transform: Matrix4.rotationZ(-8 * pi / 180)
                         ..translate(-10.0),
                       // ..translate(-10.0),
@@ -100,7 +103,20 @@ class _AuthCardState extends State<AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  void _submit() {
+  void _showDialog(String message){
+    showDialog(context: context, builder: (ctx) => AlertDialog(
+      title: Text("An error Occured"),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: (){Navigator.of(ctx).pop();},
+           child: const Text("Okey"))
+           ],
+
+    ));
+  }
+
+  Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) {
       // Invalid!
       return;
@@ -109,11 +125,33 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
+    try{
+ if (_authMode == AuthMode.Login) {
+      await Provider.of<Auth>(context, listen: false)
+          .signin(_authData['email']!, _authData['password']!);
       // Log user in
     } else {
       // Sign user up
+      await Provider.of<Auth>(context, listen: false)
+          .signup(_authData['email']!, _authData['password']!);
     }
+    } on HttpException catch (error){
+      var errorMessage = "Authotification failed"; 
+      if(error.toString().contains('EMAIL_EXISTS')){
+        errorMessage =  'This email already in use';
+      }
+      else if(errorMessage.toString().contains('INVALID_EMAIL')){
+        errorMessage = "THis is not valid email"; 
+      }
+      else if(errorMessage.toString().contains('EMAIL_NOT_FOUND')){
+        errorMessage = 'Email not found'; 
+      }
+      _showDialog(errorMessage); 
+    } catch(error){
+      const errorMessage = 'Could not authentificate you. Please try again'; 
+       _showDialog(errorMessage);  
+    }
+   
     setState(() {
       _isLoading = false;
     });
@@ -158,7 +196,6 @@ class _AuthCardState extends State<AuthCard> {
                       return 'Invalid email!';
                     }
                     return null;
-                    
                   },
                   onSaved: (value) {
                     _authData['email'] = value!;
@@ -194,7 +231,7 @@ class _AuthCardState extends State<AuthCard> {
                   height: 20,
                 ),
                 if (_isLoading)
-                 const  CircularProgressIndicator()
+                  const CircularProgressIndicator()
                 else
                   ElevatedButton(
                     onPressed: _submit,
@@ -202,7 +239,6 @@ class _AuthCardState extends State<AuthCard> {
                         Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
                   ),
                 TextButton(
-                
                   onPressed: _switchAuthMode,
                   child: Text(
                       '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),

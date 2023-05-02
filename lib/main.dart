@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import './provider/product_provider.dart';
 import './screens/orders_screen.dart';
 import './screens/auth_screen.dart';
+import './provider/auth.dart';
 
 
 void main() {
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
     //provider listener
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: Auth()),
 ChangeNotifierProvider(
        //version 4+ create instead of build
       create: (context) => Products(),
