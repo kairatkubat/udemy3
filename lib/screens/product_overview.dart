@@ -97,7 +97,7 @@ class _ProductOverVirewState extends State<ProductOverVirew> {
         ],
       ),
       drawer: const AppDrawer(),
-      body: _isLoading?  Center(child: CircularProgressIndicator(),): ProductGrid(_showOnlyFavorites),
+      body: _isLoading?  const Center(child: CircularProgressIndicator(),): ProductGrid(_showOnlyFavorites),
     );
   }
 }

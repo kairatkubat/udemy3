@@ -10,7 +10,6 @@ class OrdersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("hello mom");
     // final orderData = Provider.of<vf.Orders>(context);
     return Scaffold(
         appBar: AppBar(title: const Text('Orders')),

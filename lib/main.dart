@@ -27,16 +27,20 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: Auth()),
-ChangeNotifierProvider(
+ChangeNotifierProxyProvider<Auth, Products>(
        //version 4+ create instead of build
-      create: (context) => Products(),
+    create: (ctx) => Products('', []),
+     update: (ctx, auth, previous) => Products(auth.token?? '' , previous!.items == null?[]: previous.items),
+     //create: (BuildContext ctx) => Products(Provider.of<Auth>(ctx, listen: false)),
        ),
       ChangeNotifierProvider(create: (context) => Cart()), 
-      ChangeNotifierProvider(create: (context) => Orders()), 
+      ChangeNotifierProxyProvider<Auth, Orders>(create: (ctx) => Orders('',[]),
+       update: (ctx, auth, previous) => Orders(auth.token?? '', previous == null?[]: previous.orders)), 
     ],
       //alternative way ChangeNotifierProvider.value 
       // value: Products(),
-      child: MaterialApp(
+     
+      child: Consumer<Auth>(builder: (context, auth, _) => MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData( 
           primarySwatch: Colors.purple,
@@ -46,7 +50,7 @@ ChangeNotifierProvider(
           
           )
         ),
-        home:  AuthScreen(),
+        home: auth.isAuth? ProductOverVirew():  AuthScreen(),
         routes: {
            ProductDetailScreen.routeName: (context) => ProductDetailScreen() ,
            CartScreen.routeName:(context) => const  CartScreen() ,
@@ -55,9 +59,8 @@ ChangeNotifierProvider(
            EditProduct.routeName:(context) => const EditProduct()
 
         },
-      ),
+      ),) 
     );
   }
 }
-
  

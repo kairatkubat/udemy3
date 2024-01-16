@@ -48,6 +48,9 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
+  String authToken = '';
+  Products(this.authToken, this._items);
+
   List<Product> get favoriteItems {
     return [..._items.where((prodItem) => prodItem.isFavorite).toList()];
   }
@@ -66,17 +69,17 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     final url = Uri.parse(
-        'https://udemy3-62da2-default-rtdb.firebaseio.com/products.json');
+        'https://udemy3-62da2-default-rtdb.firebaseio.com/products.json?auth=$authToken ');
 
     try {
       final response = await http.get(url);
-      
+
       final extractData = jsonDecode(response.body) as Map<String, dynamic>;
-     
+
       final List<Product> loadedProducts = [];
-       if(extractData == null){
-        return;
-      }
+      // if (extractData == null) {
+      //   return;
+      // }
       extractData.forEach((prodId, prodData) {
         loadedProducts.add(Product(
             id: prodId,
@@ -94,7 +97,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url = Uri.parse(
-        'https://udemy3-62da2-default-rtdb.firebaseio.com/products.json');
+        'https://udemy3-62da2-default-rtdb.firebaseio.com/products.json?auth=$authToken');
     try {
       final resopnse = await http.post(url,
           body: json.encode({
@@ -133,7 +136,7 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     final url = Uri.parse(
-        'https://udemy3-62da2-default-rtdb.firebaseio.com/products/$id.json');
+        'https://udemy3-62da2-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken');
     await http.patch(url,
         body: json.encode({
           'title': newProduct.title,
@@ -152,7 +155,7 @@ class Products with ChangeNotifier {
 
   Future<void> deleteProduct(String id) async {
     final url = Uri.parse(
-        'https://udemy3-62da2-default-rtdb.firebaseio.com/products/$id.json');
+        'https://udemy3-62da2-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken');
 
     final existingProductIndex =
         _items.indexWhere((element) => element.id == id);
@@ -161,18 +164,14 @@ class Products with ChangeNotifier {
 
     _items.removeAt(existingProductIndex);
     notifyListeners();
-     
+
     final response = await http.delete(url);
-    
+
     if (response.statusCode >= 400) {
-      _items.insert(existingProductIndex, existingProduct  );
-       notifyListeners(); 
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
       throw HttpException("Could not delete messaage ");
     }
     existingProduct = null;
-    
-
-   
-    
   }
 }

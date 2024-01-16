@@ -83,7 +83,7 @@ class _EditProductState extends State<EditProduct> {
 
     if (_editProduct.id != null) {
       await Provider.of<Products>(context, listen: false)
-          .updateProduct(_editProduct.id ?? '', _editProduct);
+          .updateProduct(_editProduct.id?? '', _editProduct);
      
       // Navigator.of(context).pop();
     } else {

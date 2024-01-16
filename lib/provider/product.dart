@@ -27,16 +27,16 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavoriteStatus() async {
-    final oldStatus = !isFavorite;
+  Future<void> toggleFavoriteStatus(String token) async {
+    final oldStatus = isFavorite;
 
     isFavorite = !isFavorite;
     notifyListeners();
     final url = Uri.parse(
-        'https://udemy3-62da2-default-rtdb.firebaseio.com/products/$id.json');
+        'https://udemy3-62da2-default-rtdb.firebaseio.com/products/$id.json?auth=$token');
     try {
       final response =
-          await http.patch(url, body: json.encode({'isFavorite': isFavorite}));
+          await http.patch(url, body: jsonEncode({'isFavorite': isFavorite}));
       if (response.statusCode >= 400) {
         _setFavVal(oldStatus);
       }
@@ -45,9 +45,9 @@ class Product with ChangeNotifier {
     }
   }
 
-  void toggleIsPressed() {
-    isPressed = !isPressed;
+  // void toggleIsPressed() {
+  //   isPressed = !isPressed;
 
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 }
